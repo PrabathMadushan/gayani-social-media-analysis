@@ -1,0 +1,11 @@
+a{
+    color: blue;
+    font-weight: bold;
+}
+a:hover{
+    text-decoration: underline;
+}
+
+li{
+    padding-top: 5px;
+}

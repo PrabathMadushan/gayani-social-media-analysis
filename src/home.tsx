@@ -10,7 +10,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { getTrendingHashtags } from "./firebase";
+import {
+  AgeDistribution,
+  getAgeDistribution,
+  getHashtags,
+  getSentimentDistribution,
+  getTrendingHashtags,
+  getUsefulResources,
+  SentimentDistribution,
+} from "./firebase";
+import { useState } from "react";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -103,6 +112,43 @@ const renderCustomizedLabel = ({
 };
 
 const Home = () => {
+  const [topic, setTopic] = useState("");
+  const [sentimentD, setSentimentD] = useState<SentimentDistribution>({
+    negative: 0,
+    neutral: 0,
+    positive: 0,
+  });
+  const [age, setAge] = useState<AgeDistribution>({
+    r10to20: 0,
+    r20to30: 0,
+    r30to50: 0,
+    r50to80: 0,
+  });
+
+  const [hashTags, setHashtags] = useState<string[]>([]);
+  const [useful, setUseful] = useState("");
+
+  const getData = () => {
+    if (topic.trim() !== "") {
+      getSentimentDistribution(topic).then((e) => {
+        setSentimentD(e);
+      });
+
+      getAgeDistribution(topic).then((e) => {
+        setAge(e);
+      });
+      getHashtags(topic).then((e) => {
+        setHashtags(e);
+        console.log("eeeee", e);
+      });
+      getUsefulResources(topic).then((e) => {
+        setUseful(e);
+      });
+    } else {
+      alert("Please enter a topic");
+    }
+  };
+
   return (
     <div className="text-white">
       <div className="flex items-center justify-center flex-col gap-10">
@@ -110,9 +156,16 @@ const Home = () => {
           <div className="flex mt-6 gap-4">
             <input
               type="text"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
               className={`rounded-lg flex-1 border-gray-300 text-gray-800 border outline-none $ py-3 px-3 w-full`}
             />
-            <button className="bg-blue-500 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">
+            <button
+              onClick={() => {
+                getData();
+              }}
+              className="bg-blue-500 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg"
+            >
               Generate
             </button>
           </div>
@@ -121,7 +174,11 @@ const Home = () => {
               <h1>Sentiment Distribution of Topics</h1>
               <PieChart width={400} height={400}>
                 <Pie
-                  data={data}
+                  data={[
+                    { name: "Positive", value: sentimentD.positive },
+                    { name: "Negative", value: sentimentD.negative },
+                    { name: "Neutral", value: sentimentD.neutral },
+                  ]}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -144,7 +201,12 @@ const Home = () => {
               <h1>Engagement Distribution Across Age Groups</h1>
               <PieChart width={400} height={400}>
                 <Pie
-                  data={data}
+                  data={[
+                    { name: "10 to 20", value: age.r10to20 },
+                    { name: "20 to 30", value: age.r20to30 },
+                    { name: "30 to 50", value: age.r30to50 },
+                    { name: "50 to 80", value: age.r50to80 },
+                  ]}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -163,39 +225,27 @@ const Home = () => {
                 <Legend />
               </PieChart>
             </div>
+            <div className="w-full h-[500px] p-6 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-start justify-start">
+              <h1 className="text-[22px] font-bold">
+                Generated Hashtags for the topic
+              </h1>
+              <div className="flex flex-wrap mt-6 gap-2">
+                {hashTags?.map((e, index) => (
+                  <h1
+                    key={index}
+                    className="text-[16px] py-1 px-2 font-semibold rounded-lg  bg-gray-300"
+                  >
+                    {e}
+                  </h1>
+                ))}
+              </div>
+            </div>
+            <div className="w-full bg-slate-200 p-4 flex flex-col text-gray-800 rounded-lg items-center justify-start">
+              <h1 className="font-bold text-[20px]">Useful resources for case study</h1>
+              <div className="text-[12px] mt-4" dangerouslySetInnerHTML={{ __html: useful }}></div>
+            </div>
             <div className="w-full col-span-2 h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
-              <h1>Engagement Distribution Across Age Groups</h1>
-              <LineChart
-                width={1000}
-                height={300}
-                data={dataLineChart}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis yAxisId="left" />
-                <YAxis yAxisId="right" orientation="right" />
-                <Tooltip />
-                <Legend />
-                <Line
-                  yAxisId="left"
-                  type="monotone"
-                  dataKey="pv"
-                  stroke="#8884d8"
-                  activeDot={{ r: 8 }}
-                />
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="uv"
-                  stroke="#82ca9d"
-                />
-              </LineChart>
+             
             </div>
           </div>
         </div>
