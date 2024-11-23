@@ -11,7 +11,6 @@ import {
   getHashtags,
   getInstructions,
   getSentimentDistribution,
-  getTrendingHashtags,
   getUsefulResources,
   SentimentDistribution,
 } from "./firebase";
@@ -230,19 +229,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <button
-        onClick={() => {
-          getTrendingHashtags()
-            .then((data) => {
-              console.log(data);
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        }}
-      >
-        click
-      </button>
     </div>
   );
 };
