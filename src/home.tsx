@@ -1,25 +1,22 @@
 import {
-  CartesianGrid,
   Cell,
   Legend,
-  Line,
-  LineChart,
   Pie,
   PieChart,
   Tooltip,
-  XAxis,
-  YAxis,
 } from "recharts";
 import {
   AgeDistribution,
   getAgeDistribution,
   getHashtags,
+  getInstructions,
   getSentimentDistribution,
   getTrendingHashtags,
   getUsefulResources,
   SentimentDistribution,
 } from "./firebase";
 import { useState } from "react";
+import { BeatLoader } from "react-spinners";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -28,51 +25,6 @@ const data = [
 ];
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-const dataLineChart = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
 
 interface CustomizedLabelProps {
   cx: number; // Center x-coordinate of the pie chart
@@ -124,26 +76,40 @@ const Home = () => {
     r30to50: 0,
     r50to80: 0,
   });
+  const [loading,setLoading] = useState(false)
 
   const [hashTags, setHashtags] = useState<string[]>([]);
   const [useful, setUseful] = useState("");
+  const [instructions, setInstructions] = useState("");
 
   const getData = () => {
     if (topic.trim() !== "") {
-      getSentimentDistribution(topic).then((e) => {
-        setSentimentD(e);
-      });
-
-      getAgeDistribution(topic).then((e) => {
-        setAge(e);
-      });
-      getHashtags(topic).then((e) => {
-        setHashtags(e);
-        console.log("eeeee", e);
-      });
-      getUsefulResources(topic).then((e) => {
-        setUseful(e);
-      });
+      setLoading(true)
+      Promise.all([
+        getSentimentDistribution(topic).then((e) => {
+          setSentimentD(e);
+        }),
+        getAgeDistribution(topic).then((e) => {
+          setAge(e);
+        }),
+        getHashtags(topic).then((e) => {
+          setHashtags(e);
+          console.log("eeeee", e);
+        }),
+        getUsefulResources(topic).then((e) => {
+          setUseful(e);
+        }),
+        getInstructions(topic).then((e) => {
+          setInstructions(e);
+        }),
+      ])
+        .then(() => {})
+        .finally(()=>{
+          setLoading(false);
+        })
+        .catch((e) => {
+          alert("Error. Please try again!");
+        });
     } else {
       alert("Please enter a topic");
     }
@@ -151,6 +117,9 @@ const Home = () => {
 
   return (
     <div className="text-white">
+      {loading && <div className="fixed flex items-center justify-center w-full h-full bg-black opacity-90 z-50">
+        loading....
+      </div>}
       <div className="flex items-center justify-center flex-col gap-10">
         <div className="max-w-[1200px] w-full">
           <div className="flex mt-6 gap-4">
@@ -171,7 +140,7 @@ const Home = () => {
           </div>
           <div className="mt-4 grid gap-6 grid-cols-2 justify-items-center bg-slate-100 rounded-lg p-4">
             <div className="w-full h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
-              <h1>Sentiment Distribution of Topics</h1>
+              <div>Sentiment Distribution of Topics</div>
               <PieChart width={400} height={400}>
                 <Pie
                   data={[
@@ -198,7 +167,7 @@ const Home = () => {
               </PieChart>
             </div>
             <div className="w-full h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
-              <h1>Engagement Distribution Across Age Groups</h1>
+              <div>Engagement Distribution Across Age Groups</div>
               <PieChart width={400} height={400}>
                 <Pie
                   data={[
@@ -226,26 +195,38 @@ const Home = () => {
               </PieChart>
             </div>
             <div className="w-full h-[500px] p-6 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-start justify-start">
-              <h1 className="text-[22px] font-bold">
+              <div className="text-[22px] font-bold">
                 Generated Hashtags for the topic
-              </h1>
+              </div>
               <div className="flex flex-wrap mt-6 gap-2">
                 {hashTags?.map((e, index) => (
-                  <h1
+                  <div
                     key={index}
                     className="text-[16px] py-1 px-2 font-semibold rounded-lg  bg-gray-300"
                   >
                     {e}
-                  </h1>
+                  </div>
                 ))}
               </div>
             </div>
             <div className="w-full bg-slate-200 p-4 flex flex-col text-gray-800 rounded-lg items-center justify-start">
-              <h1 className="font-bold text-[20px]">Useful resources for case study</h1>
-              <div className="text-[12px] mt-4" dangerouslySetInnerHTML={{ __html: useful }}></div>
+              <div className="font-bold text-[20px]">
+                Useful resources for case study
+              </div>
+              <div
+                className="text-[12px] mt-4"
+                dangerouslySetInnerHTML={{ __html: useful }}
+              ></div>
             </div>
-            <div className="w-full col-span-2 h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
-             
+            <div className="w-full p-6 col-span-2 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
+              <div
+                className="text-[12px] mt-4"
+                dangerouslySetInnerHTML={{
+                  __html: instructions
+                    .replace("```html", "")
+                    .replace("```", ""),
+                }}
+              ></div>
             </div>
           </div>
         </div>

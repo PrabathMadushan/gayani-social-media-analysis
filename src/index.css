@@ -10,3 +10,14 @@ body {
   background: linear-gradient(to right, #06000a, #311369);
 
 }
+
+h3{
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+h1{
+  font-size: 32px;
+  font-weight: bold;
+}

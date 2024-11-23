@@ -2,8 +2,10 @@ import { FaBrain, FaChartLine, FaEyeDropper } from "react-icons/fa";
 import "./App.css";
 import logo from "./assets/scrutiny.png";
 import { faker } from "@faker-js/faker";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const push = useNavigate();
   return (
     <div className="flex items-center justify-center flex-col gap-10">
       <div className="max-w-[1200px] w-full">
@@ -24,7 +26,11 @@ function App() {
             understand customer sentiment, track key topics, and stay ahead of
             the competition.
           </p>
-          <button className="bg-blue-500 mt-10 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button 
+          onClick={()=>{
+            push("/home")
+          }}
+          className="bg-blue-500 mt-10 w-[150px] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Get Started
           </button>
         </div>

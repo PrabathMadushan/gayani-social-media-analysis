@@ -182,6 +182,63 @@ export async function getUsefulResources(topic: string) {
   return text;
 }
 
+export async function getInstructions(topic: string) {
+  // Provide a prompt that contains text
+  const prompt = `
+      Provide instructions or a guide about the topic ${topic}, focusing on business opportunities related to the topic and how to start a business based on it. The response must be formatted in HTML with the following structure:
+
+A title in <h1> or <h2> for the guide.
+An introduction in a <p> tag explaining the topic and business potential.
+A step-by-step guide or list with each step in a <ul> or <ol>.
+Use <li> for each instruction or key business opportunity.
+Include any relevant subheadings in <h3> for sections like "Market Research", "Building a Product", etc.
+Use <a> tags for any resources or references.
+The output must look like this:
+<div>
+  <h1>How to Start a Business Based on Topic X</h1>
+  <p>Topic X is a growing field with significant business potential. Here’s a guide to help you get started:</p>
+  <h3>1. Market Research</h3>
+  <p>Conducting thorough market research is crucial for any business:</p>
+  <ul>
+    <li>Identify the target audience.</li>
+    <li>Study competitors and their offerings.</li>
+    <li>Analyze industry trends and future prospects.</li>
+  </ul>
+  <h3>2. Business Planning</h3>
+  <p>Develop a comprehensive business plan:</p>
+  <ul>
+    <li>Define your business goals and vision.</li>
+    <li>Establish a clear value proposition.</li>
+    <li>Determine your funding requirements.</li>
+  </ul>
+  <h3>3. Building Your Product or Service</h3>
+  <ul>
+    <li>Focus on creating a high-quality product or service.</li>
+    <li>Ensure it meets customer needs.</li>
+    <li>Use feedback to iterate and improve.</li>
+  </ul>
+  <h3>4. Marketing and Sales</h3>
+  <ul>
+    <li>Create a marketing strategy using social media, SEO, and paid advertising.</li>
+    <li>Build an online presence and attract customers.</li>
+  </ul>
+  <h3>Resources</h3>
+  <ul>
+    <li><a href="https://example.com/resource1" target="_blank">Resource 1</a></li>
+    <li><a href="https://example.com/resource2" target="_blank">Resource 2</a></li>
+  </ul>
+</div>
+Do not provide any text or explanation, only the HTML code.
+    `;
+
+  // To generate text output, call generateContent with the text input
+  const result = await AIModel.generateContent(prompt);
+  const response = result.response;
+  const text = response.text();
+  console.log(text);
+  return text;
+}
+
 function extractJSONFromString(inputString: string) {
   const potentialJSONs = [];
 
