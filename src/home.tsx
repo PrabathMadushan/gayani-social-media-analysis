@@ -192,7 +192,7 @@ const Home = () => {
                 <Legend />
               </PieChart>
             </div>
-            <div className="w-full h-[500px] p-6 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-start justify-start">
+            <div className="w-full p-6 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-start justify-start">
               <div className="text-[22px] font-bold">
                 Generated Hashtags for the topic
               </div>
