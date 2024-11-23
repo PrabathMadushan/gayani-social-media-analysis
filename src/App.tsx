@@ -81,8 +81,8 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.from({ length: 10 }).map((x, index) => (
-                      <tr className="bg-white border-b ">
+                    {Array.from({ length: 10 }).map((_x, index) => (
+                      <tr className="bg-white border-b " key={index}>
                         <th
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -121,8 +121,8 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.from({ length: 10 }).map((x, index) => (
-                      <tr className="bg-white border-b ">
+                    {Array.from({ length: 10 }).map((_x, index) => (
+                      <tr key={index} className="bg-white border-b ">
                         <th
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"

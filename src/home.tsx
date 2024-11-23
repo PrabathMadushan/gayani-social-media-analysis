@@ -16,7 +16,6 @@ import {
   SentimentDistribution,
 } from "./firebase";
 import { useState } from "react";
-import { BeatLoader } from "react-spinners";
 
 const data = [
   { name: "Group A", value: 400 },
@@ -107,7 +106,7 @@ const Home = () => {
         .finally(()=>{
           setLoading(false);
         })
-        .catch((e) => {
+        .catch(() => {
           alert("Error. Please try again!");
         });
     } else {
@@ -155,7 +154,7 @@ const Home = () => {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {data.map((entry, index) => (
+                  {data.map((_entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
@@ -183,7 +182,7 @@ const Home = () => {
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {data.map((entry, index) => (
+                  {data.map((_entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
