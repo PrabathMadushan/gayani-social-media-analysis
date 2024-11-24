@@ -34,22 +34,22 @@ function App() {
             Get Started
           </button>
         </div>
-        <div className="flex  justify-between text-center mt-20 text-gray-100 gap-7">
-          <div className="flex w-[350px] flex-col items-center gap-2">
+        <div className="flex  justify-between text-center mt-20 text-gray-100 gap-y-7  flex-wrap">
+          <div className="flex w-full lg:w-1/3 flex-col items-center gap-2 ">
             <FaChartLine size={40} />
             <div className="text-[32px] font-bold">Real-Time Trends</div>
             <div className="text-gray-400">
               Stay updated with the latest buzz and hot topics in your industry.
             </div>
           </div>
-          <div className="flex  w-[350px] flex-col items-center gap-2">
+          <div className="flex  w-full lg:w-1/3 flex-col items-center gap-2">
             <FaBrain size={40} />
             <div className="text-[32px] font-bold">AI-Powered Analysis</div>
             <div className="text-gray-400">
               Get deep insights into customer behavior and preferences.
             </div>
           </div>
-          <div className="flex  w-[350px] flex-col items-center gap-2">
+          <div className="flex  w-full lg:w-1/3 flex-col items-center gap-2">
             <FaEyeDropper size={40} />
             <div className="text-[32px] font-bold">Strategic Insights</div>
             <div className="text-gray-400">
@@ -60,12 +60,12 @@ function App() {
       </div>
       <div className="bg-gray-200 py-[50px] mt-[50px] w-full flex justify-center">
         <div className="max-w-[1200px] w-full">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <div className="text-center text-[#781ecc] text-[32px] font-bold">
                 Trending Keywords
               </div>
-              <div className="mt-4">
+              <div className="mt-4 overflow-x-scroll">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
@@ -149,7 +149,7 @@ function App() {
           <h2 className="text-gray-300 text-[32px] font-bold text-center">
             Trending Industries
           </h2>
-          <div className="grid grid-cols-3 gap-10 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
             <div className="max-w-sm rounded bg-gray-200 overflow-hidden shadow-lg">
               <img
                 className="w-full"

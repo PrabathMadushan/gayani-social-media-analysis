@@ -136,8 +136,8 @@ const Home = () => {
               Generate
             </button>
           </div>
-          <div className="mt-4 grid gap-6 grid-cols-2 justify-items-center bg-slate-100 rounded-lg p-4">
-            <div className="w-full h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
+          <div className="mt-4 grid gap-6 grid-cols-1 lg:grid-cols-2  justify-items-center bg-slate-100 rounded-lg p-4">
+            <div className="w-full p-10 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
               <div>Sentiment Distribution of Topics</div>
               <PieChart width={400} height={400}>
                 <Pie
@@ -164,7 +164,7 @@ const Home = () => {
                 <Legend />
               </PieChart>
             </div>
-            <div className="w-full h-[500px] bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
+            <div className="w-full p-10 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
               <div>Engagement Distribution Across Age Groups</div>
               <PieChart width={400} height={400}>
                 <Pie
@@ -216,7 +216,7 @@ const Home = () => {
                 dangerouslySetInnerHTML={{ __html: useful }}
               ></div>
             </div>
-            <div className="w-full p-6 col-span-2 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
+            <div className="w-full p-6 lg:col-span-2 bg-slate-200 flex flex-col text-gray-800 rounded-lg items-center justify-center">
               <div
                 className="text-[12px] mt-4"
                 dangerouslySetInnerHTML={{
